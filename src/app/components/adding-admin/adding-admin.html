@@ -1,1 +1,61 @@
-<p>adding-admin works!</p>
+<form [formGroup]="AdminForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name</label>
+    <input type="text" id="name" formControlName="name" />
+    <div *ngIf="name?.invalid && (name?.dirty || name?.touched)">
+        <div *ngIf="name?.errors?.['required']">
+            <p style="color: brown;">Name is required.</p>
+        </div>
+    </div>
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email" />
+    <div *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+        <div *ngIf="email?.errors?.['required']">
+            <p style="color: brown;">Email is required.</p>
+        </div>
+        <div *ngIf="email?.errors?.['pattern']">
+            <p style="color: brown;">Invalid email format</p>
+        </div>
+    </div>
+  </div>
+
+  <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" formControlName="password" />
+  </div>
+  <div *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+      <div *ngIf="password?.errors?.['required']">
+          <p style="color: brown;">Password is required.</p>
+      </div>
+      <div *ngIf="password?.errors?.['pattern']">
+          <p style="color: brown;">Password must include letters, numbers, and special characters, and must not contain spaces, and minimum length 8 characters </p>
+      </div>
+  </div>
+
+  <button type="submit">Add</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th style="text-align: center;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let admin of admins">
+            <td>{{ admin.name }}</td>
+            <td>{{ admin.email }}</td>
+            <td>{{ admin.password }}</td>
+            <td class="actions">
+                <button (click)="Update(admin.id)">Update</button>
+                <button (click)="Delete(admin.id)" style="background-color: brown">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

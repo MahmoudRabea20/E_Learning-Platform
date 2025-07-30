@@ -32,8 +32,8 @@ export const routes: Routes = [
   {path:'register', component: Register, title: 'Register'},
   {path:'details/:id', component: Details, title: 'Details'},
   {path:'admin', component: Admin, title: 'Admin',
-    children: [
-      {path:'', redirectTo: 'addingInstructor', pathMatch:'full', title: 'Add Instructor'},
+    children: [ 
+      {path:'', redirectTo: 'addingAdmin', pathMatch:'full', title: 'Add Admin'},
       {path:'addingAdmin', component: AddingAdmin, title: 'Add Admin'},
       {path:'addingInstructor', component: AddingInstructor, title: 'Add Instructor'},
       {path:'addingClassTrack', component: AddingClassTrack, title: 'Add Class'},

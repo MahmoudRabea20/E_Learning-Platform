@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,14 +14,14 @@ export class Payment {
   paymentForm: FormGroup;
   countries = ['Egypt', 'Saudi Arabia', 'United Arab Emirates', 'Kuwait', 'Bahrain', 'Oman', 'Qatar', 'Jordan', 'Lebanon', 'Iraq', 'Syria'];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.paymentForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      cardNumber: ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
-      expiration: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
-      cvc: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
-      country: ['Netherlands', Validators.required],
-      searchQuery: ['']
+      cardNumber: ['', [Validators.required]],
+      expiration: ['', [Validators.required]],
+      cvc: ['', [Validators.required]],
+      country: ['', Validators.required],
+      // searchQuery: ['']
     });
   }
 
@@ -45,6 +46,7 @@ export class Payment {
 
   onSubmit() {
     if (this.paymentForm.valid) {
+      this.router.navigateByUrl("/home");
       console.log('Payment submitted:', this.paymentForm.value);
 
     }

@@ -6,3 +6,13 @@ export interface ISubject {
   subjectPrice: number,
   imgUrl: string
 }
+
+export interface IISubject {
+    id:number;
+    title:string;
+    description:string;
+    instructorName:string;
+    className:string;
+    trackName:string;
+}
+

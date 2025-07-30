@@ -8,6 +8,7 @@ aside{
   background-color: white;
   width: 200px;
   color: #0066cc;
+
 }
 
 aside ul {
@@ -16,6 +17,7 @@ aside ul {
   padding: 20px;
   font-weight: 600;
 
+
 }
 aside li {
   padding: 10px;
@@ -23,6 +25,7 @@ aside li {
   transition: 0.5s ease;
   border-radius: 5px;
   margin-bottom: 5px;
+  text-align: left;
 
 }
 aside li:hover {
@@ -35,7 +38,7 @@ aside li:hover {
 }
 
 .con{
-  background: white;
+  /* background: white; */
   margin: 15px;
   padding: 10px;
   border-radius: 15px;
