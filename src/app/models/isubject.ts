@@ -8,11 +8,11 @@ export interface ISubject {
 }
 
 export interface IISubject {
-    id:number;
-    title:string;
-    description:string;
-    instructorName:string;
-    className:string;
-    trackName:string;
+    subjectID:number;
+    subjectName:string;
+    subjectDescription:string;
+    instructorID:number;
+    classID:number;
+    trackID:number;
 }
 

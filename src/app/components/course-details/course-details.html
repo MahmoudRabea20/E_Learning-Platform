@@ -1,0 +1,77 @@
+
+<div class="main-container">
+    <main class="main-content">
+      <div style="background-color: #fff;
+; border-radius: 10px ; padding: 29px;">
+         <h1 class="content-title">{{ currentLessonData.title }}</h1>
+   
+      <div class="content-header">
+        
+        <button class="expand-btn">
+          <i class="fas fa-expand-alt"></i>
+        </button>
+      </div>
+  
+      <div class="video-container">
+       
+        <div class="video-player">
+          <div class="video-thumbnail">
+            <span>{{ currentLessonData.videoTitle }}</span>
+            <button class="play-btn">
+              <i class="fas fa-play"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <div class="tab-navigation">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <button class="nav-link" [ngClass]="{active: currentTab === 'overview'}" (click)="setTab('overview')">Overview</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [ngClass]="{active: currentTab === 'lessons'}" (click)="setTab('lessons')">
+              <i class="fas fa-list ms-1 "></i>
+              Lessons
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [ngClass]="{active: currentTab === 'questions'}" (click)="setTab('questions')">
+              <i class="fas fa-question-circle me-1"></i>
+              Questions
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [ngClass]="{active: currentTab === 'Assigment'}" (click)="setTab('Assigment')">
+              <i class="fas fa-question-circle me-1"></i>
+              Assigment
+            </button>
+          </li>
+        </ul>
+      </div>
+  
+      <div class="tab-content-area">
+        <div class="tab-content-panel " [ngClass]="{active: currentTab === 'overview'}" *ngIf="currentTab === 'overview'">
+          <div class="tab-content-inner" [innerHTML]="currentLessonData.overview"></div>
+        </div>
+        <div class="tab-content-panel" [ngClass]="{active: currentTab === 'lessons'}" *ngIf="currentTab === 'lessons'">
+          <div class="tab-content-inner" [innerHTML]="currentLessonData.resourses">
+          </div>
+<button (click)="onDownload()" style=" padding: 10px 40px; transition: box-shadow 0.3s, background 0.3s;background-color: #0066CC; color: aliceblue;" class="btn ms-5 mx-auto mt-4">Download PDF</button>
+
+        </div>
+        <div class="tab-content-panel" [ngClass]="{active: currentTab === 'questions'}" *ngIf="currentTab === 'questions'">
+          <div class="tab-content-inner"  [style]="{ 'max-height': '500px', 'overflow-y': 'scroll' }"> 
+          <app-quiz></app-quiz>
+            </div>
+        </div>
+        
+        <div class="tab-content-panel" [ngClass]="{active: currentTab === 'Assigment'}" *ngIf="currentTab === 'Assigment'">
+          <div class="tab-content-inner"  [style]="{ 'max-height': '500px', 'overflow-y': 'scroll' }"> 
+          <app-assigment></app-assigment>
+            </div>
+        </div>
+      </div>  
+     </div>
+    </main>
+  </div>

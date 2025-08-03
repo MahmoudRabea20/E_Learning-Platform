@@ -1,12 +1,17 @@
 
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray,FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IISubject } from '../../models/isubject';
 import { IUnit } from '../../models/iunit';
 import { ILesson } from '../../models/lesson';
 import { IQuiz } from '../../models/iquiz.ts';
+import { ClassService } from '../../services/class-service';
+import { TrackService } from '../../services/track-service';
+import { IClass } from '../../models/iclass.ts';
+import { ITrack } from '../../models/itrack.ts';
+import { SubjectService } from '../../services/subject-service';
 
 @Component({
   selector: 'app-adding-subject',
@@ -14,16 +19,18 @@ import { IQuiz } from '../../models/iquiz.ts';
   templateUrl: './adding-subject.html',
   styleUrl: './adding-subject.css'
 })
-export class AddingSubject {
+export class AddingSubject implements OnInit {
+  academicYear: number = 0;
   editSubjectId: number | null = null;
   SubjectForm: FormGroup
-  instructors: string[] = ["Muhammad", "Ahmed", "Mahmoud"]
-  classes:string[]=['class1','class2','class3']
-  trackes:string[]=['track1','track2','track3']
-  subjects: IISubject[]=[
-      {id: 1, title: "physics", description: 'ayahaga', instructorName: 'Muhammad',className:'class1',trackName:'track1'},
-      {id: 2, title: "Math", description: 'ayahaga', instructorName: 'Ahmed',className:'class2',trackName:'track2'}
-  ];
+  instructors: {instructorID:number, instructorName: string}[] =
+  [{instructorID:1, instructorName:"Ali"  },{instructorID:2, instructorName:"Khaled"},{instructorID: 3, instructorName: "Adel"}]
+  classes!:IClass[];
+  tracks!:ITrack[];
+  subjects!: IISubject[];
+  // [   {id: 1, title: "physics", description: 'ayahaga', instructorName: 'Muhammad',className:'class1',trackName:'track1'},
+  //     {id: 2, title: "Math", description: 'ayahaga', instructorName: 'Ahmed',className:'class2',trackName:'track2'}
+  // ];
 
   // unit
 
@@ -57,14 +64,14 @@ export class AddingSubject {
     }
   ];
 
-  constructor() {
+  constructor(private _classService: ClassService, private _trackService: TrackService, private _subjectService: SubjectService) {
     this.SubjectForm = new FormGroup(
       {
-        title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-        description: new FormControl('', [Validators.required, Validators.minLength(10)]),
-        instructorName: new FormControl('', [Validators.required]),
-        className:new FormControl('',[Validators.required]),
-        trackName:new FormControl('',[Validators.required])
+        subjectName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        subjectDescription: new FormControl('', [Validators.required, Validators.minLength(5)]),
+        instructorID: new FormControl('', [Validators.required]),
+        classID:new FormControl('',[Validators.required]),
+        trackID:new FormControl('',[Validators.required])
       }
     )
 
@@ -98,46 +105,113 @@ export class AddingSubject {
   });
 
   }
+
+  ngOnInit(): void{
+    this._classService.getAllClasses().subscribe({
+      next: (next) => {
+        // console.log(next);
+        this.classes = next
+      }
+    });
+
+    this._trackService.getAllTracks().subscribe({
+      next: (data) => {
+
+        this.tracks = data ;
+        // console.log(this.tracks);
+      }
+    })
+
+    this._subjectService.getAllSubject().subscribe({
+      next: (data) => {
+        this.subjects = data;
+      }
+    })
+  }
   get unitTitle() { return this.SubjectForm.get('title'); }
   get unitDescription() { return this.SubjectForm.get('description'); }
   get unitInstructorName() { return this.SubjectForm.get('instructorName'); }
   DeleteSubject(id: number) {
-    this.subjects = this.subjects.filter(subject => subject.id !== id);
+    // this.subjects = this.subjects.filter(subject => subject.subjectID !== id);
     // If the deleted subject is being edited, reset the form
+
+    console.log(id);
+
+    this._subjectService.deleteSubject(id).subscribe({
+          next : (data) => {
+
+            console.log(data);
+          },
+          error: (err) => {
+          console.error("Failed to delete subject:", err)
+        }
+    });
+    this.ngOnInit();
     if (this.editSubjectId === id) {
       this.SubjectForm.reset();
       this.editSubjectId = null;
     }
   }
   UpdateSubject(id: number) {
-    const subjectToUpdate = this.subjects.find(subject => subject.id === id);
+    const subjectToUpdate = this.subjects.find(subject => subject.subjectID === id);
     if (subjectToUpdate) {
       this.SubjectForm.patchValue(subjectToUpdate);
       this.editSubjectId = id;  // Set edit mode
     }
   }
-  onSubmitSubject() {
+  addSubject() {
     if (this.SubjectForm.valid) {
       const formData = this.SubjectForm.value;
 
       if (this.editSubjectId !== null) {
         // Update existing subject
-        const index = this.subjects.findIndex(i => i.id === this.editSubjectId);
+        const index = this.subjects.findIndex(i => i.subjectID === this.editSubjectId);
         if (index > -1) {
-          this.subjects[index] = { id: this.editSubjectId, ...formData };
+          // this.subjects[index] = { id: this.editSubjectId, ...formData };
+          console.log(formData);
+
+          this._subjectService.updateSubject(this.editSubjectId, formData).subscribe({
+            next: (data)=>{
+              console.log(data);
+
+            },
+            error: (err) => {
+              console.error("Failed to update subject:", err)
+            }
+          })
+          this.ngOnInit();
         }
         this.editSubjectId = null; // Exit edit mode
       } else {
         // Add new Subject
-        const newId = this.subjects.length > 0 ? Math.max(...this.subjects.map(i => i.id)) + 1 : 1;
-        this.subjects.push({ id: newId, ...formData });
-      }
+        // const newId = this.subjects.length > 0 ? Math.max(...this.subjects.map(i => i.id)) + 1 : 1;
+        // this.subjects.push({ id: newId, ...formData });
+        console.log(formData);
 
+        this._subjectService.addSubject(formData).subscribe({
+          next : (data) => {
+
+            console.log(data);
+          },
+          error: (err) => {
+          console.error("Failed to add subject:", err)
+        }
+        })
+        this.ngOnInit();
+      }
       this.SubjectForm.reset();
+
     } else {
       console.log('Form is invalid');
     }
   }
+
+  // changeYear(val: any){
+  //   this.academicYear = val.value;
+  //   console.log(this.academicYear);
+  //   this.on
+
+  // }
 
 
 
@@ -146,9 +220,9 @@ export class AddingSubject {
 
 
 
-  get title() { return this.UnitForm.get('title'); }
-  get description() { return this.UnitForm.get('description'); }
   get subjectName() { return this.UnitForm.get('subjectName'); }
+  get subjectDescription() { return this.UnitForm.get('description'); }
+  // get subjectName() { return this.UnitForm.get('subjectName'); }
   DeleteUnit(id: number) {
     this.units = this.units.filter(unit => unit.id !== id);
     // If the deleted unit is being edited, reset the form

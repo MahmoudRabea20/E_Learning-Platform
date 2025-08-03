@@ -14,6 +14,9 @@ import { AddingClassTrack } from './components/adding-class-track/adding-class-t
 import { AddingAdmin } from './components/adding-admin/adding-admin';
 import { AddingSubject } from './components/adding-subject/adding-subject';
 import { Instructor } from './components/instructor/instructor';
+import { CourseDetails } from './components/course-details/course-details';
+import { CourseDashboard } from './components/course-dashboard/course-dashboard';
+import { Chat } from './components/chat/chat';
 
 export const routes: Routes = [
   {path:'', redirectTo: 'home', pathMatch:'full', title: 'Home'},
@@ -25,6 +28,7 @@ export const routes: Routes = [
       {path:'', redirectTo: 'info', pathMatch:'full', title: 'Info'},
       {path:'info', component: Info, title: 'Info'},
       {path:'cart', component: Cart, title: 'Subjects'},
+      {path:'chat', component: Chat, title: 'Chat'},
       {path:'**', component: NotFound, title: 'Not Found'}
     ]
   },
@@ -32,7 +36,7 @@ export const routes: Routes = [
   {path:'register', component: Register, title: 'Register'},
   {path:'details/:id', component: Details, title: 'Details'},
   {path:'admin', component: Admin, title: 'Admin',
-    children: [ 
+    children: [
       {path:'', redirectTo: 'addingAdmin', pathMatch:'full', title: 'Add Admin'},
       {path:'addingAdmin', component: AddingAdmin, title: 'Add Admin'},
       {path:'addingInstructor', component: AddingInstructor, title: 'Add Instructor'},
@@ -41,5 +45,6 @@ export const routes: Routes = [
       {path:'**', component: NotFound, title: 'Not Found'}
     ]
   },
+  {path: 'courseDashboard', component: CourseDashboard, title: 'Course' },
   {path:'**', component: NotFound, title: 'Not Found'},
 ];

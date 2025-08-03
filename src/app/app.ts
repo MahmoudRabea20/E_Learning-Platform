@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { Navbar } from './components/navbar/navbar';
 import { Home } from './components/home/home';
 import { Footer } from './components/footer/footer';
-import { Assignment } from './components/assignment/assignment';
 import { Details } from './components/details/details';
 import { NotFound } from './components/not-found/not-found';
 import { Login } from './components/login/login';
@@ -19,10 +18,16 @@ import { AddingInstructor } from './components/adding-instructor/adding-instruct
 import { AddingClassTrack } from './components/adding-class-track/adding-class-track';
 import { AddingAdmin } from './components/adding-admin/adding-admin';
 import { AddingSubject } from './components/adding-subject/adding-subject';
+import { Assigment } from './components/assigment/assigment';
+import { CourseDashboard } from './components/course-dashboard/course-dashboard';
+import { CourseDetails } from './components/course-details/course-details';
+import { Quiz } from './components/quiz/quiz';
+import { Sidebar } from './components/sidebar/sidebar';
+import { Chat } from './components/chat/chat';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule,RouterOutlet, Navbar, Home, Footer, Assignment, Details, NotFound, Login, Register, Payment, Profile, Info, Cart, Admin, AddingInstructor, AddingClassTrack, AddingAdmin, AddingSubject, Instructor],
+  imports: [CommonModule,RouterOutlet, Navbar, Home, Footer, Details, NotFound, Login, Register, Payment, Profile, Info, Cart, Admin, AddingInstructor, AddingClassTrack, AddingAdmin, AddingSubject, Instructor, Assigment, CourseDashboard, CourseDetails, Quiz, Sidebar, Chat],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

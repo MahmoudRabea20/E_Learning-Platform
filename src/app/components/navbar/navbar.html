@@ -47,7 +47,7 @@
           <a routerLink="/login" style="color: #0066cc;" class="btn btn-light fw-bold ms-2">Login</a>
         </li>
         <li class="nav-item" *ngIf="isLogged">
-          <button class="btn btn-light fw-bold ms-2" style="color: #0066cc;" (click)="logout()">Logout</button>
+          <button class="btn btn-light fw-bold ms-2" style="color: #0066cc;" routerLink="/home" (click)="logout()">Logout</button>
         </li>
         <li class="nav-item" *ngIf="!isLogged">
           <a routerLink="/register" style="color: #0066cc;" class="btn btn-light fw-bold ms-2">Register</a>

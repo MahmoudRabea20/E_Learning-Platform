@@ -1,70 +1,75 @@
 <div class="subject">
-  <form [formGroup]="SubjectForm" (ngSubmit)="onSubmitSubject()">
+  <form [formGroup]="SubjectForm" (ngSubmit)="addSubject()">
     <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Subject</h1>
     <div>
-        <label for="title">Title</label>
-        <input id="title" formControlName="title" />
-        <div *ngIf="title?.invalid && title?.touched">
-            <p style="color: brown;">Title is required and must be at least 3 characters</p>
+        <label for="subjectName">Subject Name</label>
+        <input id="subjectName" formControlName="subjectName" />
+        <div *ngIf="subjectName?.invalid && subjectName?.touched">
+            <p style="color: brown;">Name is required and must be at least 3 characters</p>
         </div>
     </div>
     <div>
-        <label for="description">Description</label>
-        <textarea type="" id="description" formControlName="description"></textarea>
-        <div *ngIf="title?.invalid && title?.touched">
-            <p style="color: brown;">Title is required and must be at least 50 characters</p>
+        <label for="subjectDescription">Subject Description</label>
+        <textarea type="" id="subjectDescription" formControlName="subjectDescription"></textarea>
+        <div *ngIf="subjectDescription?.invalid && subjectDescription?.touched">
+            <p style="color: brown;">Description is required and must be at least 5 characters</p>
         </div>
     </div>
     <div>
-        <label for="instructorName">Select instructor of subject</label>
-        <select name="instructorName" id="instructorName" formControlName="instructorName" >
-            <div *ngFor="let instructorName of instructors">
-            <option [value]="instructorName">{{instructorName}}</option>
+        <label for="instructorID">Select Instructor Of Subject</label>
+        <select name="instructorID" id="instructorID" formControlName="instructorID" >
+            <div *ngFor="let instructor of instructors">
+            <option [value]="instructor.instructorID">{{instructor.instructorName}}</option>
             </div>
         </select>
     </div>
      <div>
-        <label for="className">Select class of subject</label>
-        <select name="className" id="className" formControlName="className" >
-            <div *ngFor="let className of instructors">
-            <option [value]="className">{{className}}</option>
+        <label for="classID">Select Class Of Subject</label>
+        <select name="classID" id="classID" formControlName="classID" >
+            <div *ngFor="let class of classes">
+            <option [value]="class.classID">{{class.className}}</option>
             </div>
         </select>
     </div>
     <div>
-        <label for="trackName">Select track of subject</label>
-        <select name="trackName" id="trackName" formControlName="trackName" >
-            <div *ngFor="let trackName of trackes">
-            <option [value]="trackName">{{trackName}}</option>
+        <label for="trackID">Select Track Of Subject</label>
+        <select name="trackID" id="trackID" formControlName="trackID" >
+            <div *ngFor="let track of tracks">
+            <option [value]="track.trackID">{{track.trackName}}</option>
             </div>
         </select>
     </div>
-    <button type="submit" style="margin-top: 20px; width: 100%; background-color: #0066cc;">Add</button>
+    <button type="submit" style="margin-top: 20px; width: 100%; background-color: #0066cc;">Add Subject</button>
 </form>
 <table>
     <thead>
         <tr>
-            <th>Title</th>
+            <th>Name</th>
             <th>Description</th>
             <th>Instructor</th>
+            <th>Class</th>
+            <th>Track</th>
             <th style="text-align: center;">Actions</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let subject of subjects">
-            <td>{{subject.title}}</td>
-            <td>{{subject.description}}</td>
-            <td>{{subject.instructorName}}</td>
+            <td>{{subject.subjectName}}</td>
+            <td>{{subject.subjectDescription}}</td>
+            <td>{{subject.instructorID}}</td>
+            <td>{{subject.classID}}</td>
+            <td>{{subject.trackID}}</td>
             <td class="actions" style="text-align: center;">
-                <button (click)="UpdateSubject(subject.id)">Update</button>
-                <button (click)="DeleteSubject(subject.id)">Delete</button>
+                <button (click)="UpdateSubject(subject.subjectID)">Update</button>
+                <button (click)="DeleteSubject(subject.subjectID)">Delete</button>
             </td>
         </tr>
     </tbody>
 </table>
 </div>
+
 <!-- /*************  Unit   ***************/ -->
-<div class="unit" >
+<!-- <div class="unit" >
 
   <form [formGroup]="UnitForm" (ngSubmit)="onSubmitUnit()">
     <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Units</h1>
@@ -119,7 +124,7 @@
 
 
 <!-- /*************  Lesson   ***************/ -->
-<div class="leson">
+<!-- <div class="leson">
   <form [formGroup]="LessonForm" (ngSubmit)="onSubmitLesson()">
     <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Lesson</h1>
        <div>
@@ -210,16 +215,16 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> -->
 
 
 
-</div>
+<!-- </div>  -->
 
 
 <!-- /***************        Quiz     ***************************/ -->
 
-<form [formGroup]="QuizForm" (ngSubmit)="onSubmitQuiz()">
+<!-- <form [formGroup]="QuizForm" (ngSubmit)="onSubmitQuiz()">
     <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Quiz</h1>
     <div>
         <label for="lessonTitle">Select subject Name:</label>
@@ -292,4 +297,4 @@
             </td>
         </tr>
     </tbody>
-</table>
+</table> -->
