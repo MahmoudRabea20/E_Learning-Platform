@@ -1,35 +1,46 @@
 import { Injectable } from '@angular/core';
 import { IStudent } from '../models/istudent';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  student: IStudent;
 
-  constructor(){
-    this.student = {
-      name: "Ahmed Riad",
-      email: "Ahmed@gmail.com",
-      phoneNumber: 1113635553,
-      address: "Cairo, Helwan",
-      gender: "Male",
-      age: 18
-    }
+  constructor(private _httpClient: HttpClient){}
+
+  // getAllSubject(): Observable<IISubject[]>{
+  //   return this._httpClient.get<IISubject[]>(`${environment.baseUrl}/subject`);
+  // }
+
+  // getSubjectById(id: number): Observable<IISubject> {
+  //   return this._httpClient.get<IISubject>(`${environment.baseUrl}/subject/${id}`);
+  // }
+
+  // getSubjectByName(name: string): Observable<IISubject> {
+  //   return this._httpClient.get<IISubject>(`${environment.baseUrl}/subject/${name}`);
+  // }
+
+  addStudent(_student: IStudent): Observable<string> {
+
+    return this._httpClient.post<string> (`${environment.baseUrl}/student/studentRegister`, _student,{
+      headers: new HttpHeaders({
+        'content-type': "application/json"
+      })
+    });
   }
 
-  getStudent(): IStudent {
-    return this.student;
-  }
+  // updateSubject(id: number, _subject: IISubject): Observable<string> {
+  //   return this._httpClient.put<string>(`${environment.baseUrl}/subject/${id}`, JSON.stringify(_subject),{
+  //     headers: new HttpHeaders({
+  //       'content-type': "application/json"
+  //     })
+  //   });
+  // }
 
-  addStudent(std: IStudent): void {
-    this.student = {
-      name: std.name,
-      email: std.email,
-      phoneNumber: std.phoneNumber,
-      address: std.address,
-      gender: std.gender,
-      age: std.age
-    }
-  }
+  // deleteSubject(id: number): Observable<string> {
+  //   return this._httpClient.delete<string>(`${environment.baseUrl}/subject/${id}`);
+  // }
 }

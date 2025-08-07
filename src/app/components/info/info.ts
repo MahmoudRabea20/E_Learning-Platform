@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { IStudent } from '../../models/istudent';
-import { StudentService } from '../../services/student-service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-info',
@@ -8,13 +6,8 @@ import { StudentService } from '../../services/student-service';
   templateUrl: './info.html',
   styleUrl: './info.css'
 })
-export class Info implements OnInit {
+export class Info {
 
-  student!: IStudent;
 
-  constructor(private _stdService: StudentService){}
-
-  ngOnInit(): void {
-    this.student = this._stdService.getStudent();
-  }
 }
+

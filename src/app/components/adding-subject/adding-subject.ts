@@ -194,7 +194,7 @@ export class AddingSubject implements OnInit {
             console.log(data);
           },
           error: (err) => {
-          console.error("Failed to add subject:", err)
+          console.error("Failed to add subject:", err.error.error)
         }
         })
         this.ngOnInit();
