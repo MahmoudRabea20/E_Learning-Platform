@@ -15,6 +15,6 @@ export class Info implements OnInit {
   constructor(private _stdService: StudentService){}
 
   ngOnInit(): void {
-    this.student = this._stdService.getStudent();
+    // this.student = this._stdService.getStudent();
   }
 }

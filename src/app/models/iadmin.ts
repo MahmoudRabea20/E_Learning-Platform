@@ -1,6 +1,9 @@
 export interface IAdmin {
-    id: number; // Optional, as it may not be present when creating a new admin
-    name:string,
+    id: number;
+    firstName:string,
+    lastName:string,
+    phoneNumber: string,
+    nationalId: number;
     email: string;
     password: string;
 }

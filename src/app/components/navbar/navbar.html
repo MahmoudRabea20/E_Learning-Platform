@@ -34,25 +34,30 @@
     <!-- Collapsible Nav Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item">
-          <a routerLink="/instructor" class="nav-link fw-bold text-white">Instructor</a>
+        <li class="nav-item" *ngIf="isInstructorLogged && !isAdminLogged && !isStudentLogged">
+        <!-- <li class="nav-item" > -->
+          <a routerLink="/instructor" class="nav-link fw-bold text-white">Instructor Dashboard</a>
         </li>
-        <li class="nav-item">
-          <a routerLink="/admin" class="nav-link fw-bold text-white">Admin</a>
+        <li class="nav-item" *ngIf="!isInstructorLogged && isAdminLogged && !isStudentLogged">
+        <!-- <li class="nav-item" > -->
+          <a routerLink="/admin" class="nav-link fw-bold text-white">Admin Dashboard</a>
         </li>
         <li class="nav-item">
           <a routerLink="/home" class="nav-link fw-bold text-white">Home</a>
         </li>
-        <li class="nav-item" *ngIf="!isLogged">
+        <li class="nav-item" *ngIf="!isInstructorLogged && !isAdminLogged && !isStudentLogged">
+        <!-- <li class="nav-item" > -->
           <a routerLink="/login" style="color: #0066cc;" class="btn btn-light fw-bold ms-2">Login</a>
         </li>
-        <li class="nav-item" *ngIf="isLogged">
+        <li class="nav-item" *ngIf="isInstructorLogged || isAdminLogged || isStudentLogged">
+        <!-- <li class="nav-item" > -->
           <button class="btn btn-light fw-bold ms-2" style="color: #0066cc;" routerLink="/home" (click)="logout()">Logout</button>
         </li>
-        <li class="nav-item" *ngIf="!isLogged">
+        <li class="nav-item" *ngIf="!isInstructorLogged && !isAdminLogged && !isStudentLogged">
+        <!-- <li class="nav-item" > -->
           <a routerLink="/register" style="color: #0066cc;" class="btn btn-light fw-bold ms-2">Register</a>
         </li>
-        <li class="nav-item ms-3" *ngIf="isLogged">
+        <li class="nav-item ms-3" *ngIf="isInstructorLogged || isAdminLogged || isStudentLogged">
           <a routerLink="/profile">
             <img src="profile.png"  style="border-radius: 50% ; height: 50px; width: 50px;" alt="Profile">
           </a>

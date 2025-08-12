@@ -1,20 +1,10 @@
-// import { Component } from '@angular/core';
 
-// @Component({
-//   selector: 'app-adding-instructor',
-//   imports: [],
-//   templateUrl: './adding-instructor.html',
-//   styleUrl: './adding-instructor.css'
-// })
-// export class AddingInstructor {
 
-// }
-
-// import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IInstructor } from '../../models/iinstructor';
+import { InstructorService } from '../../services/instructor-service';
 
 @Component({
   selector: 'app-adding-instructor',
@@ -23,45 +13,73 @@ import { IInstructor } from '../../models/iinstructor';
   templateUrl: './adding-instructor.html',
   styleUrl: './adding-instructor.css'
 })
-export class AddingInstructor {
+export class AddingInstructor implements OnInit {
   InstructorForm: FormGroup;
-  instructors: IInstructor[] = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', password: 'password123', address: '123 Main St', phone: '1234567890', gender: 'Male', age: 30 },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', password: 'password456', address: '456 Elm St', phone: '9876543210', gender: 'Female', age: 25 }
-  ];
+  instructors: IInstructor[] = [];
   editId: number | null = null;
 
-  constructor() {
+  constructor(private _instructorService : InstructorService) {
     this.InstructorForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       address: new FormControl('', [Validators.required, Validators.minLength(10)]),
-      phone: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
       gender: new FormControl('', [Validators.required]),
-      age: new FormControl('', [Validators.required, Validators.min(18), Validators.max(100)])
+      image: new FormControl('', [Validators.required]),
     });
   }
 
-  get name() { return this.InstructorForm.get('name'); }
+  get firstName() { return this.InstructorForm.get('firstName'); }
+  get lastName() { return this.InstructorForm.get('lasttName'); }
   get email() { return this.InstructorForm.get('email'); }
   get password() { return this.InstructorForm.get('password'); }
   get address() { return this.InstructorForm.get('address'); }
-  get phone() { return this.InstructorForm.get('phone'); }
   get gender() { return this.InstructorForm.get('gender'); }
-  get age() { return this.InstructorForm.get('age'); }
+  get image() { return this.InstructorForm.get('image'); }
+  get phoneNumber() { return this.InstructorForm.get('phoneNumber'); }
+
+  ngOnInit(): void {
+    this._instructorService.getAllInstructors().subscribe({
+      next: (data) => {
+        this.instructors = data;
+      },
+      error: (err) => {
+        console.log(err.err.errors);
+      }
+
+    })
+  }
 
   Update(id: number) {
+
+    console.log(id);
     const instructorToUpdate = this.instructors.find(instructor => instructor.id === id);
     if (instructorToUpdate) {
+      this.InstructorForm.get('password')?.clearValidators();
+      this.InstructorForm.get('password')?.updateValueAndValidity();
+      this.InstructorForm.get('password')?.disable();
       this.InstructorForm.patchValue(instructorToUpdate);
       this.editId = id;  // Set edit mode
     }
   }
 
   Delete(id: number) {
-    this.instructors = this.instructors.filter(instructor => instructor.id !== id);
+    // this.instructors = this.instructors.filter(instructor => instructor.id !== id);
     // If the deleted instructor is being edited, reset the form
+    console.log(id);
+
+    this._instructorService.deleteInstructor(id).subscribe({
+          next : (data) => {
+
+            console.log(data);
+          },
+          error: (err) => {
+          console.error("Failed to delete Instructor:", err.error.errors)
+        }
+    });
+    this.ngOnInit();
     if (this.editId === id) {
       this.InstructorForm.reset();
       this.editId = null;
@@ -74,15 +92,36 @@ export class AddingInstructor {
 
       if (this.editId !== null) {
         // Update existing instructor
+        console.log(this.editId);
+
+         const { password, ...instructorData } = formData;
         const index = this.instructors.findIndex(i => i.id === this.editId);
         if (index > -1) {
-          this.instructors[index] = { id: this.editId, ...formData };
+          this._instructorService.updateInstructor(this.editId, instructorData as IInstructor).subscribe({
+            next: (data)=>{
+              console.log(data);
+
+            },
+            error: (err) => {
+              console.error("Failed to update instructor:", err.error.errors)
+            }
+          })
+          this.ngOnInit();
         }
         this.editId = null; // Exit edit mode
       } else {
         // Add new instructor
-        const newId = this.instructors.length > 0 ? Math.max(...this.instructors.map(i => i.id)) + 1 : 1;
-        this.instructors.push({ id: newId, ...formData });
+        console.log(formData);
+
+        this._instructorService.addInstructor(formData).subscribe({
+          next : (data) => {
+
+            console.log(data);
+          },
+          error: (err) => {
+          console.log(err.error.errors)
+        }
+        })
       }
 
       this.InstructorForm.reset();

@@ -24,10 +24,13 @@ import { CourseDetails } from './components/course-details/course-details';
 import { Quiz } from './components/quiz/quiz';
 import { Sidebar } from './components/sidebar/sidebar';
 import { Chat } from './components/chat/chat';
+import { AddingUnitAndLesson } from './components/adding-unit-and-lesson/adding-unit-and-lesson';
+import { LiveMeeting } from './components/live-meeting/live-meeting';
+import { Chatbotspesefic } from './components/chatbotspesefic/chatbotspesefic';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule,RouterOutlet, Navbar, Home, Footer, Details, NotFound, Login, Register, Payment, Profile, Info, Cart, Admin, AddingInstructor, AddingClassTrack, AddingAdmin, AddingSubject, Instructor, Assigment, CourseDashboard, CourseDetails, Quiz, Sidebar, Chat],
+  imports: [CommonModule,RouterOutlet, Chatbotspesefic,LiveMeeting , Navbar, Home, Footer, Details, NotFound, Login, Register, Payment, Profile, Info, Cart, Admin, AddingInstructor, AddingClassTrack, AddingAdmin, AddingSubject, Instructor, Assigment, CourseDashboard, CourseDetails, Quiz, Sidebar, Chat, AddingUnitAndLesson],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

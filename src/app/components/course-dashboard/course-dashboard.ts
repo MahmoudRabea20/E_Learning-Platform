@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { Sidebar } from "../sidebar/sidebar";
 import { CourseDetails } from '../course-details/course-details';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course-dashboard',
@@ -8,7 +9,18 @@ import { CourseDetails } from '../course-details/course-details';
   templateUrl: './course-dashboard.html',
   styleUrl: './course-dashboard.css'
 })
-export class CourseDashboard {
-protected title = 'course';
-  selectedLesson: string = 'html';
+export class CourseDashboard implements OnInit {
+subjectId!: number;
+  selectedLessonId!: number;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.subjectId = Number(this.route.snapshot.paramMap.get('id'));
+  }
+
+  onLessonSelected(lessonId: number) {
+    this.selectedLessonId = lessonId;
+  }
+
 }

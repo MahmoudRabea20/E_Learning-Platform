@@ -1,37 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IAdmin } from '../../models/iadmin';
+import { AdminService } from '../../services/admin-service';
 
 
 @Component({
   selector: 'app-adding-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ],
+  imports: [CommonModule, ReactiveFormsModule ],
   templateUrl: './adding-admin.html',
   styleUrl: './adding-admin.css'
 })
-export class AddingAdmin {
+export class AddingAdmin implements OnInit {
   admins: IAdmin[] = [];
   AdminForm: FormGroup;
   editId: number | null = null;
 
-  constructor() {
+  constructor(private _adminService: AdminService) {
     this.AdminForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      nationalId: new FormControl('', [Validators.required, Validators.pattern("^[2-3][0-9]{13}$")]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z][a-zA-Z0-9_]*@gmail\\.com$")]),
       password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9])[\S]{8,}$/) ])
     });
-
-    this.admins = [
-      { id: 1, name: "Khaled Ali", email: '@gmail.com', password: 'password123' },
-      { id: 2, name: "Taha Ahmed", email: 'example.vijn', password: 'password456' },
-      { id: 3, name: "Reda Sayed", email: 'ayhaga@gmail.com', password: 'password789' }
-    ];
   }
 
-  get name() {
-    return this.AdminForm.get('name');
+  get firstName() {
+    return this.AdminForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.AdminForm.get('lastName');
+  }
+
+   get phoneNumber() {
+    return this.AdminForm.get('phoneNumber');
+  }
+
+  get nationalId() {
+    return this.AdminForm.get('nationalId');
   }
 
   get email() {
@@ -42,46 +52,95 @@ export class AddingAdmin {
     return this.AdminForm.get('password');
   }
 
-  Update(id: number) {
-    const adminToUpdate = this.admins.find(admin => admin.id === id);
-    if (adminToUpdate) {
-      this.AdminForm.patchValue({
-        name: adminToUpdate.name,
-        email: adminToUpdate.email,
-        password: adminToUpdate.password
-      });
-      this.editId = id;
-    }
-  }
-
-  Delete(id: number) {
-    this.admins = this.admins.filter(admin => admin.id !== id);
-    if (this.editId === id) {
-      this.AdminForm.reset();
-      this.editId = null;
-    }
-  }
-
-  onSubmit() {
-    if (this.AdminForm.valid) {
-      const formData = this.AdminForm.value;
-
-      if (this.editId !== null) {
-        // Update existing admin
-        const index = this.admins.findIndex(admin => admin.id === this.editId);
-        if (index !== -1) {
-          this.admins[index] = { id: this.editId, ...formData };
+  ngOnInit(): void {
+      this._adminService.getAllAdmins().subscribe({
+        next: (data) => {
+          this.admins = data;
+        },
+        error: (err) => {
+          console.log(err.err.errors);
         }
-        this.editId = null;
-      } else {
-        // Add new admin
-        const newId = this.admins.length > 0 ? Math.max(...this.admins.map(a => a.id)) + 1 : 1;
-        this.admins.push({ id: newId, ...formData });
-      }
 
-      this.AdminForm.reset();
-    } else {
-      console.log('Form is invalid');
+      })
     }
-  }
+
+    Update(id: number) {
+
+      console.log(id);
+      const adminToUpdate = this.admins.find(admin => admin.id === id);
+      if (adminToUpdate) {
+        this.AdminForm.get('password')?.clearValidators();
+        this.AdminForm.get('password')?.updateValueAndValidity();
+        this.AdminForm.get('password')?.disable();
+        this.AdminForm.patchValue(adminToUpdate);
+        this.editId = id;  // Set edit mode
+      }
+    }
+
+    Delete(id: number) {
+      // this.instructors = this.instructors.filter(instructor => instructor.id !== id);
+      // If the deleted instructor is being edited, reset the form
+      console.log(id);
+
+      this._adminService.deleteAdmin(id).subscribe({
+            next : (data) => {
+
+              console.log(data);
+            },
+            error: (err) => {
+            console.error("Failed to delete Admin:", err.error.errors)
+          }
+      });
+      this.ngOnInit();
+      if (this.editId === id) {
+        this.AdminForm.reset();
+        this.editId = null;
+      }
+    }
+
+    onSubmit() {
+      if (this.AdminForm.valid) {
+        const formData = this.AdminForm.value;
+
+        if (this.editId !== null) {
+          // Update existing admin
+          console.log(this.editId);
+
+           const { password, ...adminData } = formData;
+          const index = this.admins.findIndex(a => a.id === this.editId);
+          if (index > -1) {
+            this._adminService.updateAdmin(this.editId, adminData as IAdmin).subscribe({
+              next: (data)=>{
+                console.log(data);
+
+              },
+              error: (err) => {
+                console.error("Failed to update Admin:", err.error.errors)
+              }
+            })
+            this.ngOnInit();
+          }
+          this.editId = null; // Exit edit mode
+        } else {
+          // Add new admin
+          console.log(formData);
+
+          this._adminService.addAdmin(formData).subscribe({
+            next : (data) => {
+
+              console.log(data);
+            },
+            error: (err) => {
+            console.log(err.error.errors)
+          }
+          })
+        }
+
+        this.AdminForm.reset();
+      } else {
+        console.log('Form is invalid');
+      }
+    }
+
+
 }

@@ -17,11 +17,15 @@ import { Instructor } from './components/instructor/instructor';
 import { CourseDetails } from './components/course-details/course-details';
 import { CourseDashboard } from './components/course-dashboard/course-dashboard';
 import { Chat } from './components/chat/chat';
+import { AddingUnitAndLesson } from './components/adding-unit-and-lesson/adding-unit-and-lesson';
+import { LiveMeeting } from './components/live-meeting/live-meeting';
 
 export const routes: Routes = [
   {path:'', redirectTo: 'home', pathMatch:'full', title: 'Home'},
   {path:'home', component: Home, title: 'Home'},
   {path:'payment', component: Payment, title: 'Payment'},
+  {path:'meeting', component: LiveMeeting, title: 'Meeting'},
+  {path:'chat', component: Chat, title: 'Chat'},
   {path:'instructor', component: Instructor, title: 'Instructor'},
   {path:'profile', component: Profile, title: 'Profile',
     children: [
@@ -33,6 +37,7 @@ export const routes: Routes = [
     ]
   },
   {path:'login', component: Login, title: 'Login'},
+
   {path:'register', component: Register, title: 'Register'},
   {path:'details/:id', component: Details, title: 'Details'},
   {path:'admin', component: Admin, title: 'Admin',
@@ -45,6 +50,6 @@ export const routes: Routes = [
       {path:'**', component: NotFound, title: 'Not Found'}
     ]
   },
-  {path: 'courseDashboard', component: CourseDashboard, title: 'Course' },
+  {path: 'courseDashboard/:id', component: CourseDashboard, title: 'Course' },
   {path:'**', component: NotFound, title: 'Not Found'},
 ];

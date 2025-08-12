@@ -14,7 +14,7 @@ export class SubjectService {
   }
 
   getSubjectById(id: number): Observable<IISubject> {
-    return this._httpClient.get<IISubject>(`${environment.baseUrl}/subject/${id}`);
+    return this._httpClient.get<IISubject>(`${environment.baseUrl}/Subject/id/${id}`);
   }
 
   getSubjectByName(name: string): Observable<IISubject> {
@@ -22,8 +22,10 @@ export class SubjectService {
   }
 
   addSubject(_subject: IISubject): Observable<IISubject> {
+    console.log("service");
 
-    return this._httpClient.post<IISubject>(`${environment.baseUrl}/subject`, JSON.stringify(_subject),{
+
+    return this._httpClient.post<IISubject>(`${environment.baseUrl}/subject`, _subject,{
       headers: new HttpHeaders({
         'content-type': "application/json"
       })

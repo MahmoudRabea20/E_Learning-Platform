@@ -1,7 +1,7 @@
 @media (max-width: 1200px) {
   .main-content {
     padding: 1.5rem 1rem;
-    
+
   }
   .tab-content-inner {
     padding: 18px 10px;
@@ -29,7 +29,7 @@
     border-radius: 0;
     height: auto;
   }
-  
+
   .main-content {
 
             margin-left: 0 !important;
@@ -78,7 +78,7 @@
   }
 }
 /* Active accordion header background color */
-.tab-content-area 
+.tab-content-area
 {
   /* width: 800px; */
   max-width: 100%;
@@ -87,7 +87,7 @@
   box-sizing: border-box;
   height: 400px;
 }
-  
+
 .completion-info {
             display: flex;
             align-items: center;
@@ -127,8 +127,8 @@
             max-width: 100vw;
           }
         }
-            
-        
+
+
 
         .sidebar {
             width: 368px;
@@ -267,9 +267,9 @@
             background: #e9ecef;
             padding: 2.5rem 3rem 2rem 3rem;
 
-           
 
-            
+
+
         }
 
         .content-header {
@@ -309,7 +309,7 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
 
         /* .video-container {
             padding: 40px;
-           
+
             padding-bottom: 20px;
         } */
 
@@ -326,7 +326,7 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
         .video-thumbnail {
             width: 100%;
             height: 400px;
-            background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAABAUCAwYAAQf/xAAsEAACAgEEAQMEAQQDAAAAAAABAgMRAAQSITEFQVETImFxgTKhscHR4fDx/8QAGAEAAwEBAAAAAAAAAAAAAAAAAgMEAQX/xAAcEQACAwEBAQEAAAAAAAAAAAABAgADERIhMUH/2gAMAwEAAhEDEQA/APJNVAkhSFQqD2TW/H+zEj8lqNZK8mnVSEUu8jdKo9k0Gfgj19OOQbtyPjITyzrHJLLFLEzIu5kDAhR8mrdfjM7o/6MUbKNRKzoX2g+yzEHv7ZXXLOYJhAy7z6zGfT5K6i0jOtZLxnVoUUaAknooT3nYaRw7uD8k5pIfhSb9mzs7OxVUwxP/Z') center/cover;
+            /* background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAABAUCAwYAAQf/xAAsEAACAgEEAQMEAQQDAAAAAAABAgMRAAQSITEFQVETImFxgTKhscHR4fDx/8QAGAEAAwEBAAAAAAAAAAAAAAAAAgMEAQX/xAAcEQACAwEBAQEAAAAAAAAAAAABAgADERIhMUH/2gAMAwEAAhEDEQA/APJNVAkhSFQqD2TW/H+zEj8lqNZK8mnVSEUu8jdKo9k0Gfgj19OOQbtyPjITyzrHJLLFLEzIu5kDAhR8mrdfjM7o/6MUbKNRKzoX2g+yzEHv7ZXXLOYJhAy7z6zGfT5K6i0jOtZLxnVoUUaAknooT3nYaRw7uD8k5pIfhSb9mzs7OxVUwxP/Z') center/cover; */
             position: relative;
         }
 
@@ -426,9 +426,9 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
             border-bottom: 3px solid transparent;
         }
 
-       
 
-        
+
+
 /* Modern Glassmorphism Card for Lesson Content */
 .tab-content-inner {
 
@@ -527,12 +527,12 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
             width: 100vw;
             max-width: 100vw;
           }
-  
+
 }
 
-        .tab-content-panel {
+        /* .tab-content-panel {
             display: none;
-        }
+        } */
 
         .tab-content-panel.active {
             display: block;
@@ -747,11 +747,11 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
                 transform: translateX(0);
             }
 
-           
 
-        
 
-            
+
+
+
 
             .tab-navigation {
                 padding: 0 20px;
@@ -814,7 +814,7 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
         .lesson-list li.active, .lesson-list li:hover {
             background: #4285f4;
             color: #fff;
-        
+
         }
         .lesson-list li .bi {
             margin-right: 0.7rem;
@@ -862,7 +862,7 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
             background: #fff2;
         }
 
-         
+
         .main-content h2 {
             font-weight: 700;
             font-size: 2.2rem;
@@ -872,7 +872,7 @@ background: linear-gradient(90deg, #0066cc 0%, #4f9ef7 50%, #8b5cf6 100%);
           .main-content .video-container {
             /* background: #fff; */
             border-radius: 16px;
-            
+
             padding: 1rem;
             margin-bottom: 2rem;
             display: flex;

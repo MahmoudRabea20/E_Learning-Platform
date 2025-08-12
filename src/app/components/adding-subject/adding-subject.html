@@ -15,11 +15,20 @@
             <p style="color: brown;">Description is required and must be at least 5 characters</p>
         </div>
     </div>
+
+    <div>
+        <label for="price">Subject Price</label>
+        <input id="price" formControlName="price" />
+        <div *ngIf="price?.invalid && price?.touched">
+            <p style="color: brown;">Price is required and must be at least 3 characters</p>
+        </div>
+    </div>
+
     <div>
         <label for="instructorID">Select Instructor Of Subject</label>
         <select name="instructorID" id="instructorID" formControlName="instructorID" >
             <div *ngFor="let instructor of instructors">
-            <option [value]="instructor.instructorID">{{instructor.instructorName}}</option>
+            <option [value]="instructor.id">{{instructor.firstName}} {{instructor.lastName}}</option>
             </div>
         </select>
     </div>
@@ -56,9 +65,9 @@
         <tr *ngFor="let subject of subjects">
             <td>{{subject.subjectName}}</td>
             <td>{{subject.subjectDescription}}</td>
-            <td>{{subject.instructorID}}</td>
-            <td>{{subject.classID}}</td>
-            <td>{{subject.trackID}}</td>
+            <td>{{subject.instructorName}}</td>
+            <td>{{subject.className}}</td>
+            <td>{{subject.trackName}}</td>
             <td class="actions" style="text-align: center;">
                 <button (click)="UpdateSubject(subject.subjectID)">Update</button>
                 <button (click)="DeleteSubject(subject.subjectID)">Delete</button>
@@ -68,7 +77,15 @@
 </table>
 </div>
 
-<!-- /*************  Unit   ***************/ -->
+<!-- /************* Start Unit and lesson  ***************/ -->
+
+<app-adding-unit-and-lesson></app-adding-unit-and-lesson>
+
+<!-- /************* End Unit and lesson  ***************/ -->
+
+
+
+
 <!-- <div class="unit" >
 
   <form [formGroup]="UnitForm" (ngSubmit)="onSubmitUnit()">
@@ -123,7 +140,7 @@
 </div>
 
 
-<!-- /*************  Lesson   ***************/ -->
+< /*************  Lesson   ***************/ -->
 <!-- <div class="leson">
   <form [formGroup]="LessonForm" (ngSubmit)="onSubmitLesson()">
     <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Lesson</h1>

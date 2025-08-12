@@ -1,11 +1,11 @@
-export interface ILesson {
-    id:number;
-    title:string;
-    description:string;
-    pdfTitle:string;
-    videoTitle:string;
-    assignmentTitle:string;
-    assignmentDeadline:string;
-    unitTitle:string;
-    subjectTitle:string;
+export interface Ilesson {
+  id: number;
+  title: string;
+  description?: string;
+  unitId: number;
+  unitName: string;
+  videoUrl?: string;
+  pdfUrl?: string;
+  assigmentUrl?: string;
+  assigmentDeadLine?: Date;
 }

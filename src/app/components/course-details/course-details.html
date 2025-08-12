@@ -1,29 +1,49 @@
+<div class="chat-live">
+  <nav class="navbar navbar-expand-lg navbar-dark " style="background-color:aliceblue">
+  <div class="container">
 
-<div class="main-container">
-    <main class="main-content">
-      <div style="background-color: #fff;
-; border-radius: 10px ; padding: 29px;">
-         <h1 class="content-title">{{ currentLessonData.title }}</h1>
-   
+
+    <!-- Collapsible Nav Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item" >
+          <a routerLink="/chat" class="nav-link fw-bold text-white" style="cursor: pointer; background-color: #0066CC; margin-right: 50px; border-radius: 5px;">Chat with us</a>
+        </li>
+        <!-- <li class="nav-item" *ngIf="!isInstructorLogged && isAdminLogged && !isStudentLogged"> -->
+        <li class="nav-item" >
+          <a routerLink="/meeting" class="nav-link fw-bold text-white" style="cursor: pointer; background-color: #0066CC; margin-right: 400px; border-radius: 5px;">Live Lecture</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+<div class="main-container" *ngIf="lessonData" >
+  <main class="main-content" style="min-height: 100vh;">
+    <div style="background-color: #fff; border-radius: 10px; padding: 29px;">
+      <h1 class="content-title">{{ lessonData.title }}</h1>
+
       <div class="content-header">
-        
         <button class="expand-btn">
           <i class="fas fa-expand-alt"></i>
         </button>
       </div>
-  
-      <div class="video-container">
-       
-        <div class="video-player">
-          <div class="video-thumbnail">
-            <span>{{ currentLessonData.videoTitle }}</span>
+
+      <!-- <div class="video-container"> -->
+        <!-- <div class="video-player">
+          <div class="video-thumbnail"> -->
+            <div class="mx-auto text-center my-5">
+          <video  [src]="lessonData.videoUrl" controls class="w-100 "></video>
+        </div>
+            <!-- <span>{{ lessonData.title }}</span>
             <button class="play-btn">
               <i class="fas fa-play"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-  
+            </button> -->
+          <!-- </div>
+        </div> -->
+      <!-- </div> -->
+
       <div class="tab-navigation">
         <ul class="nav nav-tabs">
           <li class="nav-item">
@@ -31,47 +51,49 @@
           </li>
           <li class="nav-item">
             <button class="nav-link" [ngClass]="{active: currentTab === 'lessons'}" (click)="setTab('lessons')">
-              <i class="fas fa-list ms-1 "></i>
-              Lessons
+              <i class="fas fa-list ms-1"></i> Lessons
             </button>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <button class="nav-link" [ngClass]="{active: currentTab === 'questions'}" (click)="setTab('questions')">
-              <i class="fas fa-question-circle me-1"></i>
-              Questions
+              <i class="fas fa-question-circle me-1"></i> Questions
             </button>
-          </li>
+          </li> -->
           <li class="nav-item">
             <button class="nav-link" [ngClass]="{active: currentTab === 'Assigment'}" (click)="setTab('Assigment')">
-              <i class="fas fa-question-circle me-1"></i>
-              Assigment
+              <i class="fas fa-question-circle me-1"></i> Assignment
             </button>
           </li>
         </ul>
       </div>
-  
-      <div class="tab-content-area">
-        <div class="tab-content-panel " [ngClass]="{active: currentTab === 'overview'}" *ngIf="currentTab === 'overview'">
-          <div class="tab-content-inner" [innerHTML]="currentLessonData.overview"></div>
-        </div>
-        <div class="tab-content-panel" [ngClass]="{active: currentTab === 'lessons'}" *ngIf="currentTab === 'lessons'">
-          <div class="tab-content-inner" [innerHTML]="currentLessonData.resourses">
-          </div>
-<button (click)="onDownload()" style=" padding: 10px 40px; transition: box-shadow 0.3s, background 0.3s;background-color: #0066CC; color: aliceblue;" class="btn ms-5 mx-auto mt-4">Download PDF</button>
 
+      <div class="tab-content-area">
+        <div class="tab-content-panel" *ngIf="currentTab === 'overview'">
+          <div class="tab-content-inner">
+            <p>{{ lessonData.description }}</p>
+          </div>
         </div>
-        <div class="tab-content-panel" [ngClass]="{active: currentTab === 'questions'}" *ngIf="currentTab === 'questions'">
-          <div class="tab-content-inner"  [style]="{ 'max-height': '500px', 'overflow-y': 'scroll' }"> 
-          <app-quiz></app-quiz>
-            </div>
+        <div class="tab-content-panel" *ngIf="currentTab === 'lessons'">
+          <div class="tab-content-inner">
+            <p class="fw-bold fs-3">Download Your Resources</p>
+          </div>
+          <div class="text-center">
+          <button (click)="onDownload()" class="btn btn-primary mt-3" *ngIf="lessonData.pdfUrl">Download PDF</button></div>
         </div>
-        
-        <div class="tab-content-panel" [ngClass]="{active: currentTab === 'Assigment'}" *ngIf="currentTab === 'Assigment'">
-          <div class="tab-content-inner"  [style]="{ 'max-height': '500px', 'overflow-y': 'scroll' }"> 
-          <app-assigment></app-assigment>
-            </div>
+        <div class="tab-content-panel" *ngIf="currentTab === 'questions'">
+          <!-- <app-quiz [lessonIdAssigment]="lessonData.id"></app-quiz> -->
         </div>
-      </div>  
-     </div>
-    </main>
-  </div>
+        <div class="tab-content-panel" *ngIf="currentTab === 'Assigment'">
+          <div class=""  >
+ <h1 class="my-5 mx-auto">Download your Assigment From Here</h1>
+<button (click)="onDownload()" style="background-color: #0066CC; color: aliceblue;" class="btn  mt-4">Download PDF</button>
+</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div *ngIf="!lessonData">
+  <p>Loading lesson details or no lesson selected.</p>
+</div>

@@ -1,4 +1,4 @@
-
+<div style="position: relative;">
 <!-- Start Header -->
 <div class=" jumbotron jumbotron-fluid position-relative overlay-bottom" style="margin-bottom: 10px;">
   <div class="container text-center my-5" style="padding: 100px;">
@@ -9,11 +9,35 @@
 <!-- End Header -->
 
 <!-- Start Subjects -->
-<div class="justify-content-center pt-5 container">
+<div class="justify-content-center pt-5 container ">
         <div class="section-title text-center position-relative mb-4 row">
             <h1 class="display-5 mb-5" style="color: #0066cc; font-weight: bold ;">Explore Subjects</h1>
             <div class="d-flex ">
-              <select class="form-select mx-3 p-3" style="font-size: 20px;" [(ngModel)]="SelectedAcademicYear">
+              <select class="form-select mx-3 p-3" style="font-size: 20px;" [(ngModel)]="selectedClassId" (change)="loadData()">
+                <option [ngValue]="null"  disabled>Select the academic year</option>
+                <!-- <option *ngFor="let c of classes" [value]="c.classID">{{ c.className }}</option> -->
+                @for(c of classes; track c.classID ){
+                <option  [value]="c.classID">{{ c.className }}</option>
+                }
+              </select>
+
+              <select class="form-select mx-3 p-3" style="font-size: 20px;" [(ngModel)]="selectedTrackId" (change)="loadData()">
+                <option [ngValue]="null"  disabled>Select the academic track</option>
+                <!-- <option *ngFor="let t of tracks" [value]="t.trackID">{{ t.trackName }}</option> -->
+                @for(t of tracks; track t.trackID){
+                  <option  [value]="t.trackID">{{ t.trackName }}</option>
+                }
+              </select>
+
+              <!-- <div *ngIf="cardData">
+                <div class="card">
+                  <h3>{{ cardData.instructorName }}</h3>
+                  <p>Subject: {{ cardData.subjectName }}</p>
+                  <p>Price: {{ cardData.price | currency }}</p>
+                  <p>Class: {{ cardData.className }}</p>
+                  <p>Track: {{ cardData.trackName }}</p>
+              </div> -->
+              <!-- <select class="form-select mx-3 p-3" style="font-size: 20px;" [(ngModel)]="SelectedAcademicYear">
                 <option [ngValue]="0" disabled>Select the academic year</option>
                 <option [ngValue]="1">First Year (Secondary)</option>
                 <option [ngValue]="2">Second Year (Secondary)</option>
@@ -38,7 +62,7 @@
                     <option [ngValue]="2">Science-Biology</option>
                     <option [ngValue]="3">Literature</option>
                   }
-                }
+                } -->
 
                 <!-- <option [ngValue]="0" disabled>Select the academic track</option>
 
@@ -57,25 +81,42 @@
                   <option [ngValue]="2">Science-Biology</option>
                   <option [ngValue]="3">Literature</option>
                 </ng-container> -->
-              </select>
+              <!-- </select> -->
+
             </div>
         </div>
         <div class="row row-gap-5 my-5">
-          @for(subject of subjects; track subject.id){
-            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 justify-content-center d-flex" [routerLink]="['/details',subject.id]">
+          <!-- @for(subject of subjects; track subject.subjectID){
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 justify-content-center d-flex" [routerLink]="['/details',subject.subjectID]">
               <div class="card hover-move" style="width: 17rem;">
                 <div class="image-wrapper" style="cursor: pointer;" >
-                  <img [src]="subject.imgUrl" class="card-img-top" alt="physics"/>
+                  <!-- <img [src]="subject.imgUrl" class="card-img-top" alt="physics"/> -->
+                <!-- </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{subject.instructorName}}</h5>
+                  <h5 class="card-text">{{subject.subjectName}}</h5>
+                  <h5 class="card-text">{{subject.price| currency: " EGP "}}</h5> -->
+                  <!-- <button class="btn btn-light" style="color: white; background-color: #0066cc;">Join Now</button> -->
+                <!-- </div>
+              </div>
+            </div>
+          } -->
+          @for(subject of subjects; track subject.subjectId){
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 justify-content-center d-flex" [routerLink]="['/details',subject.subjectId]">
+              <div class="card hover-move" style="width: 17rem;">
+                <div class="image-wrapper" style="cursor: pointer;" >
+                  <img [src]="subject.imgUrl" class="card-img-top" [alt]="subject.subjectName"/>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">{{subject.teacherName}}</h5>
                   <h5 class="card-text">{{subject.subjectName}}</h5>
+                  <h5 class="card-title">{{subject.instructorName}}</h5>
                   <h5 class="card-text">{{subject.subjectPrice | currency: " EGP "}}</h5>
                   <!-- <button class="btn btn-light" style="color: white; background-color: #0066cc;">Join Now</button> -->
                 </div>
               </div>
             </div>
           }
+
         </div>
 
 </div>
@@ -122,3 +163,12 @@
   </div>
 </div>
 <!-- End Contact us -->
+ <button class="floating-btn" (click)="togglePanel()">
+  {{ isPanelOpen ? 'Close Panel' : 'Open Panel' }}
+</button>
+
+<div *ngIf="isPanelOpen">
+
+  <app-chatbotspesefic></app-chatbotspesefic>
+</div>
+</div>

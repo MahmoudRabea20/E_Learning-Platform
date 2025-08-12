@@ -1,0 +1,294 @@
+<div class="_class">
+
+<!-- //!SECTION 1: UnitForms -->
+ <table>
+    <thead>
+        <tr>
+            <th>Unit Name</th>
+            <th>Unit Description</th>
+            <th>Unit Subject</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor ="let unit of Units">
+            <td>{{unit.title}}</td>
+            <td>{{unit.description}}</td>
+            <td>{{unit.subjectName}}</td>
+            <td class="actions">
+                <button (click)="UPDATEUnit(unit.id)" >Update Unit</button>
+                <button (click)="DELETE(unit.id)" >Delete Unit</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+  <form  [formGroup]="unitForm" (ngSubmit)="onSubmit()">
+    <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Unit</h1>
+<div>
+     <div>
+        <label hidden id="UnitName">Unit id</label>
+        <input formControlName="id" type="hidden" placeholder="Unit id"  />
+    </div>
+
+
+</div>
+<div>
+     <div>
+        <label id="UnitName">Unit Name</label>
+        <input formControlName="title" placeholder="Unit Name" />
+    </div>
+
+ <div *ngIf="unitForm.get('title')?.touched">
+  <p *ngIf="unitForm.get('title')?.hasError('required')">Name is required</p>
+  <p *ngIf="unitForm.get('title')?.hasError('minlength')">Name must be at least 3 characters</p>
+  </div>
+</div>
+
+<div>
+ <div>
+        <label id="UnitName">Description</label>
+        <textarea formControlName="description" placeholder="Unit Description" rows="3"></textarea>
+</div>
+<div *ngIf="unitForm.get('description')?.touched">
+  <p *ngIf="unitForm.get('description')?.hasError('required')">description is required</p>
+  <p *ngIf="unitForm.get('description')?.hasError('minlength')">description must be at least 3 characters</p>
+</div>
+
+</div>
+
+
+<div>
+     <div>
+        <label id="UnitName">Subjects</label>
+        <select name="Subject" id="Subject" formControlName="subjectId">
+            <option value=""  selected>Select Subject</option>
+            <option *ngFor="let subject of subjects" [value]="subject.subjectID">{{subject.subjectName}}</option>
+
+        </select>
+    </div>
+    <!-- Alerts -->
+            <div *ngIf="unitForm.get('subjectId')?.invalid && unitForm.get('subjectId')?.touched">
+              <p style="color: brown;">Subject is required</p>
+            </div>
+
+</div>
+
+
+<button type="submit" style="width: 100%; background-color: #0066cc;">
+  {{ unitForm.get('id')?.value ? 'Update Unit' : 'Add Unit' }}
+</button>
+</form>
+
+<!-- //!SECTION 2: Unit Table -->
+
+</div>
+
+
+
+<div class="lesson" >
+    <!-- //!SECTION 4 - Lessons Table -->
+<table >
+    <thead>
+        <tr>
+            <th> Name</th>
+
+            <th>Unit </th>
+            <th>Assigment Deadline</th>
+            <th>Update</th>
+            <th>Delete</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let lesson of Lessons">
+            <td>{{lesson.title}}</td>
+
+            <td>{{lesson.unitName}}</td>
+            <td>{{lesson.assigmentDeadLine}}</td>
+            <td ><button (click)="UpdateLesson(lesson.id)" class="btn btn-warning" >Update Lesson</button></td>
+                <td><button (click)="DeleteLesson(lesson.id)" class="btn btn-danger" >Delete Lesson</button></td>
+              <td> <button (click)="GetById(lesson.id)" class="btn btn-primary" > More Details about the Lesson</button></td>
+
+        </tr>
+    </tbody>
+</table>
+
+<!--  //!SECTION 3: Lesson Forms -->
+  <form [formGroup]="lessonForm" (ngSubmit)="onLessonSubmit()" *ngIf="!isDetails">
+  <h1 style="text-align: center; color: #0066cc; margin: 10px;">Add Lesson</h1>
+  <input formControlName="id" type="hidden" />
+
+  <!-- Title -->
+  <div>
+    <label for="lessonTitle">Name *</label>
+    <input id="lessonTitle" formControlName="title" placeholder="Lesson Name" />
+    <div *ngIf="lessonForm.get('title')?.touched">
+      <p *ngIf="lessonForm.get('title')?.hasError('required')" class="error">Name is required</p>
+      <p *ngIf="lessonForm.get('title')?.hasError('minlength')" class="error">Name must be at least 3 characters</p>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div>
+    <label for="lessonDescription">Description *</label>
+    <textarea id="lessonDescription" formControlName="description" placeholder="Description" rows="3"></textarea>
+    <div *ngIf="lessonForm.get('description')?.touched">
+      <p *ngIf="lessonForm.get('description')?.hasError('required')" class="error">Description is required</p>
+      <p *ngIf="lessonForm.get('description')?.hasError('minlength')" class="error">Description must be at least 10 characters</p>
+    </div>
+  </div>
+  <!-- Subject -->
+<div>
+  <label id="UnitName">Subjects</label>
+  <select name="Subject" id="Subject" formControlName="subjectId" (change)="onSubjectChange($event)">
+    <option value="" disabled selected>Select Subject</option>
+    <option *ngFor="let subject of subjects" [value]="subject.subjectID">
+      {{subject.subjectName}}
+    </option>
+  </select>
+  <div *ngIf="lessonForm.get('subjectId')?.invalid && lessonForm.get('subjectId')?.touched">
+    <p style="color: brown;">Subject is required</p>
+  </div>
+</div>
+
+<!-- Unit -->
+<div>
+  <label for="unitSelect">Unit *</label>
+  <select id="unitSelect" formControlName="unitId">
+    <option value="" disabled>Select Unit</option>
+    <option *ngFor="let unit of Units" [value]="unit.id">{{ unit.title }}</option>
+  </select>
+  <p *ngIf="lessonForm.get('unitId')?.invalid && lessonForm.get('unitId')?.touched" class="error">
+    Unit is required
+  </p>
+</div>
+
+
+  <!-- Video -->
+  <div>
+    <label for="videoFile">Video </label>
+    <input type="file" id="videoFile" (change)="onVideoFileChange($event)" accept="video/*" />
+    <div *ngIf=" invalidVideoType ">
+      <!-- <p *ngIf="videoFileData" class="error">Video is required</p> -->
+      <p *ngIf="invalidVideoType" class="error">Only video files are allowed</p>
+    </div>
+  </div>
+
+  <!-- PDF -->
+<div>
+  <label for="pdfInput">PDF Resources </label>
+  <input type="file" id="pdfInput" (change)="onPdfFileChange($event)" accept=".pdf" />
+  <div *ngIf="invalidPdfType">
+    <p class="error">Only PDF files are allowed</p>
+  </div>
+</div>
+
+<!-- Assignment -->
+<div>
+  <label for="AssigmentInput">Assignment </label>
+  <input type="file" id="AssigmentInput" (change)="onPdfFileChange($event)" accept=".pdf" />
+  <div *ngIf="invalidAssignmentType">
+    <p class="error">Only PDF files are allowed</p>
+  </div>
+</div>
+
+  <!-- Assignment Deadline -->
+  <div>
+    <label for="assignmentDeadline">Assignment Deadline</label>
+    <input type="date" id="assignmentDeadline" formControlName="assignmentDeadline" />
+    <p *ngIf="assignmentFileData && !lessonForm.get('assignmentDeadline')?.value" class="error">
+      Assignment Deadline is required when assignment is provided
+    </p>
+  </div>
+
+  <button type="submit" style="width: 100%; background-color: #0066cc;">
+    {{ lessonForm.get('id')?.value ? 'Update Lesson' : 'Add Lesson' }}
+  </button>
+</form>
+
+</div>
+<!-- //!SECTION 4:LessonDetails -->
+<div class="wrapper" *ngIf="isDetails">
+
+<!-- <h1 style="text-align: center;">{{lesson.unitName}}:{{lesson.title}}</h1> -->
+
+<div class="container ">
+    <div class="tabs">
+    <div class="selector"></div>
+    <a href="#" *ngFor="let tab of tabs; let i = index"
+       [class.active]="activeTab === i"
+       (click)="selectTab(i, $event)">
+      <i [class]="tab.icon"></i> {{ tab.label }}
+    </a>
+  </div>
+  <div class="tab-content mt-4">
+    <ng-container [ngSwitch]="tabs[activeTab].key">
+
+      <div *ngSwitchCase="'description'">
+        <h3 class="text-center" style="color: #0066cc;">Details</h3>
+        <p class="my-5 fs-4 text-black">{{ lesson.description }}</p>
+        <h3 class="text-center" style="color: #0066cc;">Video Session</h3>
+        <div class="mx-auto text-center">
+          <video  [src]="lesson.videoUrl" controls class="w-50 "></video>
+        </div>
+
+        <!-- <div class="me-5">
+            <button class="btn btn-secondary">Back </button>
+
+        </div> -->
+      </div>
+
+
+
+      <div *ngSwitchCase="'pdf'">
+        <h2 class="text-center" style="color: #0066cc;">Download Resources</h2>
+        <div class="text-center">
+            <button class="btn btn-primary text-center me-auto my-5"
+                *ngIf="lesson?.pdfUrl"
+                (click)="downloadPdf(lesson?.pdfUrl??'')">
+          Download From Here
+        </button>
+    </div>
+
+
+
+
+      </div>
+
+      <div *ngSwitchCase="'assignment'">
+         <h2 class="text-center my-5" style="color: #0066cc;">Assignment</h2>
+        <div class="text-center my-5">
+            <button class="btn btn-primary text-center me-auto my-5"
+                *ngIf="lesson?.pdfUrl"
+                (click)="downloadPdf(lesson?.assigmentUrl??'')">
+          Download From Here
+        </button>
+    </div>
+
+      </div>
+
+    </ng-container>
+  </div>
+
+  <div class=" text-center my-3" *ngIf="isDetails">
+            <button class="btn btn-secondary w-25 my-5" (click)="this.closeDetails()" >Back </button>
+
+        </div>
+    <!-- <h2>Description Of the Lesson</h2>
+    <p>{{lesson.description}}</p>
+
+    <video [src]="lesson.videoUrl" class="w-50" controls></video>
+
+<button class="btn btn-primary" *ngIf="lesson?.pdfUrl" (click)="downloadPdf(lesson.pdfUrl,'resoures')">
+  Download PDF
+</button>
+<div>
+<button class="btn btn-primary ms-5" *ngIf="lesson?.assigmentUrl" (click)="downloadPdf(lesson.assigmentUrl,'resoures')">
+  Download Assigment
+</button>
+</div> -->
+
+
+</div>
+</div>

@@ -16,7 +16,7 @@ export class Cart {
 
   constructor(private _sub : ApiSubjectSrevice){}
 
-  ngOnInit(): void {
-    this.subjects  = this._sub.getAllSubjects();
-  }
+  // ngOnInit(): void {
+  //   this.subjects  = this._sub.getAllSubjects();
+  // }
 }

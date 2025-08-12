@@ -1,2 +1,7 @@
-<app-course-details [currentLesson]="selectedLesson"></app-course-details>
-<app-sidebar (lessonSelected)="selectedLesson = $event"></app-sidebar>
+<div class="course-dashboard">
+  <app-sidebar [subjectId]="subjectId"
+    (lessonSelected)="onLessonSelected($event)">
+  </app-sidebar>
+
+  <app-course-details [lessonId]="selectedLessonId"></app-course-details>
+</div>
