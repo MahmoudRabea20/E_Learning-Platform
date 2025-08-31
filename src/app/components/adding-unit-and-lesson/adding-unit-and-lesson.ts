@@ -1,12 +1,15 @@
+import { QuizService } from './../../services/quiz-service';
 import { LessonService } from './../../services/lesson-service';
 import { SubjectService } from './../../services/subject-service';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { UnitService } from '../../services/unit-service';
 import { IUnit } from '../../models/iunit';
 import { CommonModule } from '@angular/common';
 import { Ilesson } from '../../models/ilesson';
+// import { QuizService } from '../../services/quiz-service';
 import JSZip from 'jszip';
+import { Iquiz } from '../../models/iquiz.ts';
 @Component({
   selector: 'app-adding-unit-and-lesson',
   imports: [ FormsModule, ReactiveFormsModule, CommonModule ],
@@ -26,9 +29,11 @@ export class AddingUnitAndLesson implements OnInit {
 
 
   assigmentDeadLine:new Date()}
-  quizUnits: IUnit[] = [];
-  quizLessons: Ilesson[] = [];
-  lessonHasQuiz: boolean = false;
+   quizForm!: FormGroup;
+  subjectsQuiz: any[] = [];
+  unitsquiz: any[] = [];
+  lessonsquiz: any[] = [];
+  quizzes: Iquiz[] = [];
 pdfFileData: File | null = null;
 assignmentFileData: File | null = null;
   invalidVideoType: boolean = false;
@@ -44,9 +49,10 @@ lessonForm!: FormGroup;
  unitToUpdate: IUnit | null = null;
 Units: IUnit[] = [];
  Lessons:Ilesson[] = [];
-lessonofquiz: Ilesson[] = [];
-  editQuizId: number | null = null;
-  constructor(private fb: FormBuilder,private unitService: UnitService , private SubjectService : SubjectService , private LessonService:LessonService) {}
+isDetailsQuiz = false;
+  quizDetails!: Iquiz;
+  updateMode = false;
+  constructor(private fb: FormBuilder,private unitService: UnitService , private SubjectService : SubjectService , private LessonService:LessonService ,private QuizService:QuizService) {}
 
    ngOnInit(): void {
 
@@ -71,6 +77,17 @@ subjectId: ['', Validators.required],
   assignmentDeadline: [null]
     });
 
+//ANCHOR - Quiz Form
+    this.QuizForm = this.fb.group({
+  id: [0],
+  description: ['', [Validators.required, Validators.minLength(3)]],
+  assignedBefore: [false],
+  totalMarks: [0, Validators.required],
+  subjectId: ['', Validators.required],
+  unitId: ['', Validators.required],
+  lessonId: ['', Validators.required],
+  questions: this.fb.array([])  
+});
 
 
 
@@ -108,7 +125,8 @@ subjectId: ['', Validators.required],
       error: (error) => console.error('Error fetching lessons:', error)
     });
 
-    // this.loadLessonsAndQuizzes();
+       this.loadQuizzes();
+
 
   }
 
@@ -236,9 +254,9 @@ if (this.assignmentFileData) {
 
     formData.forEach((value, key) => {
       if (value instanceof File) {
-        // console.log(`${key}: File - ${value.name} (${value.size} bytes`, ${value.type}));
+        // console.log(${key}: File - ${value.name} (${value.size} bytes, ${value.type}));
       } else {
-        console.log(`${key}: ${value}`);
+        // console.log(`${key}: ${value}`);
       }
     });
 
@@ -593,4 +611,204 @@ onSubjectChange(event: Event) {
     this.loadUnitsBySubjectId(subjectId);
   }
 }
+
+//!SECTION 7: Quiz
+
+  get questions(): FormArray {
+  return this.QuizForm.get('questions') as FormArray;
+}
+
+ 
+  newOption(): FormGroup {
+    return this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      isCorrect: [false],
+    });
+  }
+
+  newQuestion(): FormGroup {
+    return this.fb.group({
+      id: [0],
+      content: ['', Validators.required],
+      mark: [0, Validators.required],
+      options: this.fb.array([this.newOption()]),
+    });
+  }
+
+  addQuestion(): void {
+    this.questions.push(this.newQuestion());
+  }
+
+  removeQuestion(i: number): void {
+    this.questions.removeAt(i);
+  }
+getOptions(qIndex: number): FormArray {
+  return this.questions.at(qIndex).get('options') as FormArray;
+}
+
+  addOption(qIndex: number): void {
+    const opts = this.questions.at(qIndex).get('options') as FormArray;
+    opts.push(this.newOption());
+  }
+
+  removeOption(qIndex: number, oIndex: number): void {
+    const opts = this.questions.at(qIndex).get('options') as FormArray;
+    opts.removeAt(oIndex);
+  }
+
+  loadSubjects() {
+    this.SubjectService.getAllSubject().subscribe(res => (this.subjectsQuiz = res));
+  }
+
+
+  onSubjectChangeQuiz(event: any) {
+    const subjectId = event.target.value;
+    this.unitService.getUnitsBySubjectId(subjectId).subscribe(res => (this.unitsquiz = res));
+  }
+
+  onUnitChangeQuiz(event: any) {
+    const unitId = event.target.value;
+    this.LessonService.getByUnitId(unitId).subscribe(res => (this.lessonsquiz = res));
+  }
+
+  private buildQuizPayload(): Iquiz {
+   return {
+    description: this.QuizForm.value.description,
+    assignedBefore: this.QuizForm.value.assignedBefore,
+    totalMarks: this.QuizForm.value.totalMarks,
+    lessonId: this.QuizForm.value.lessonId,
+    questions: this.QuizForm.value.questions.map((q: any) => ({
+      content: q.content,
+      mark: q.mark,
+      options: q.options.map((o: any) => ({
+        name: o.name,
+        isCorrect: o.isCorrect
+      }))
+    }))
+  };
+}
+
+onQuizSubmit() {
+  if (this.QuizForm.invalid) {
+    this.QuizForm.markAllAsTouched();
+    return;
+  }
+
+  const quizPayload = this.buildQuizPayload();
+
+  if (this.QuizForm.value.id && this.QuizForm.value.id > 0) {
+    const quizId = this.QuizForm.value.id;
+    this.QuizService.updateQuiz(quizId, quizPayload).subscribe({
+      next: () => {
+         this.loadQuizzes();
+        this.resetForm();
+      },
+    });
+  } else {
+    this.QuizService.addQuiz(quizPayload).subscribe({
+      next: () => {
+        this.loadQuizzes();
+        this.resetForm();
+      },
+    });
+  }
+}
+
+  
+  loadQuizzes() {
+    this.QuizService.getAllQuizzes().subscribe(res => (this.quizzes = res));
+  }
+
+editQuiz(quiz: Iquiz) {
+this.updateMode = true;
+
+  this.QuizForm.patchValue({
+    id: quiz.id,
+    description: quiz.description,
+    assignedBefore: quiz.assignedBefore,
+    totalMarks: quiz.totalMarks,
+    lessonId: quiz.lessonId
+  });
+
+const lessonId = quiz.lessonId ?? 0;
+if (lessonId) {
+  this.LessonService.getById(lessonId).subscribe(lesson => {
+    if (lesson) {
+     
+      this.QuizForm.patchValue({ 
+        lessonId: lesson.id, 
+        unitId: lesson.unitId 
+      });
+
+      this.LessonService.getByUnitId(lesson.unitId).subscribe(lessons => {
+        this.lessonsquiz = lessons;
+
+        this.QuizForm.patchValue({ lessonId: lesson.id });
+      });
+
+      this.unitService.getUnitById(lesson.unitId).subscribe(unit => {
+        if (unit) {
+          this.QuizForm.patchValue({ subjectId: unit.subjectId });
+
+          this.unitService.getUnitsBySubjectId(unit.subjectId).subscribe(units => {
+            this.unitsquiz = units;
+
+            this.QuizForm.patchValue({ unitId: lesson.unitId });
+          });
+        }
+      });
+    }
+  });}
+
+
+  this.questions.clear();
+  quiz.questions?.forEach(q => {
+    const qGroup = this.newQuestion();
+    qGroup.patchValue({ content: q.content, mark: q.mark });
+    this.questions.push(qGroup);
+
+    const opts = qGroup.get('options') as FormArray;
+    opts.clear();
+    q.options?.forEach(o => {
+      const oGroup = this.newOption();
+      oGroup.patchValue({ name: o.name, isCorrect: o.isCorrect });
+      opts.push(oGroup);
+    });
+  });}
+
+  deleteQuiz(id?: number) {
+    this.QuizService.deleteQuiz(id).subscribe(() => {
+      this.quizzes = this.quizzes.filter(q => q.id !== id);
+    });
+  }
+
+  showDetails(quiz: Iquiz) {
+    this.quizDetails = quiz;
+    this.isDetailsQuiz = true;
+  }
+
+  closeDetailsQuiz() {
+    this.isDetailsQuiz = false;
+  }
+
+  resetForm() {
+    this.quizForm.reset();
+    this.quizForm.patchValue({ id: 0 });
+    this.questions.clear();
+    this.updateMode = false;
+  }
+  quizTabs = [
+  { key: 'details', label: 'Details', icon: 'bi bi-info-circle' },
+  { key: 'questions', label: 'Questions', icon: 'bi bi-list-check' }
+];
+
+activeQuizTab = 0;
+
+selectQuizTab(i: number, event: Event) {
+  event.preventDefault();
+  this.activeQuizTab = i;
+}
+
+
 }

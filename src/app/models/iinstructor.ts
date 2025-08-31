@@ -6,6 +6,8 @@ export interface IInstructor {
   phoneNumber: string,
   address: string,
   gender: string,
-  image: string,
-  password:string
+  password?:string,
+  Image?:File ,
+  ImageURL?: string,
+
 }

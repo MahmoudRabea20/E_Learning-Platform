@@ -3,21 +3,29 @@ import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IStudent } from '../models/istudent';
+import { UserAuthentication } from './user-authentication';
+import { IUser } from '../models/iuser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
 
-  constructor(private _httpClient: HttpClient){}
+  constructor(private _httpClient: HttpClient,private _authUser: UserAuthentication){}
 
   // getAllSubject(): Observable<IISubject[]>{
   //   return this._httpClient.get<IISubject[]>(`${environment.baseUrl}/subject`);
   // }
 
-  // getSubjectById(id: number): Observable<IISubject> {
-  //   return this._httpClient.get<IISubject>(`${environment.baseUrl}/subject/${id}`);
-  // }
+  getStudentById(id: number): Observable<IUser> {
+    let token: string | null = this._authUser.getToken();
+    return this._httpClient.get<IUser>(`${environment.baseUrl}/student/id/${id}`, {
+      headers: new HttpHeaders({
+        'content-type': 'application/json',
+        'authorization': `Bearer ${token}`
+      })
+    });
+  }
 
   // getSubjectByName(name: string): Observable<IISubject> {
   //   return this._httpClient.get<IISubject>(`${environment.baseUrl}/subject/${name}`);

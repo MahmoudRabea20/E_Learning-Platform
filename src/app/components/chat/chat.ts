@@ -3,6 +3,7 @@ import * as SignalR from '@microsoft/signalr';
 import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UserAuthentication } from '../../services/user-authentication';
 
 @Component({
   selector: 'app-chat',
@@ -22,7 +23,7 @@ export class Chat implements OnInit {
   readMsg: string ="";
 
 
-  constructor() {
+  constructor(private _authUser: UserAuthentication) {
 
     this.con = new SignalR.HubConnectionBuilder()
   .withUrl("https://localhost:7092/chat", {
@@ -81,6 +82,6 @@ export class Chat implements OnInit {
   }
 
   ngOnInit(){
-    this.name = prompt("Enter Your Name");
+    this.name = this._authUser.getFullName();
   }
 }

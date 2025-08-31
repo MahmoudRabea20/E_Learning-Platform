@@ -4,7 +4,7 @@ import { LessonService } from './../../services/lesson-service';
 import { UnitService } from './../../services/unit-service';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IISubject } from '../../models/isubject';
 import { firstValueFrom } from 'rxjs';
 import { Ilesson } from '../../models/ilesson';
@@ -12,7 +12,7 @@ import { ISection, IUnit } from '../../models/iunit';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })

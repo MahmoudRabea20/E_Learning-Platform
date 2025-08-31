@@ -11,43 +11,43 @@ import { CommonModule } from '@angular/common';
 })
 export class Navbar implements OnInit {
 
-  isAdminLogged: boolean = false;
-  isInstructorLogged: boolean = false;
-  isStudentLogged: boolean = false;
+  // isAdminLogged: boolean = false;
+  // isInstructorLogged: boolean = false;
+  // isStudentLogged: boolean = false;
 
-  constructor(private _authSer: UserAuthentication) {
+  constructor(public _authSer: UserAuthentication) {
 
-    this.isAdminLogged = false;
-  this.isInstructorLogged= false;
-  this.isStudentLogged = false;
+  //   this.isAdminLogged = false;
+  // this.isInstructorLogged= false;
+  // this.isStudentLogged = false;
   }
 
   ngOnInit(): void {
-    this._authSer.getAdminAuthenticationService().subscribe({
-      next: (status) => {this.isAdminLogged = status},
-      error: (er) => {console.log(er)}
+    // this._authSer.getAdminAuthenticationService().subscribe({
+    //   next: (status) => {this.isAdminLogged = status},
+    //   error: (er) => {console.log(er)}
 
-    });
+    // });
 
-    this._authSer.getInstructorAuthenticationService().subscribe({
-      next: (status) => {this.isInstructorLogged = status},
-      error: (er) => {console.log(er)}
+    // this._authSer.getInstructorAuthenticationService().subscribe({
+    //   next: (status) => {this.isInstructorLogged = status},
+    //   error: (er) => {console.log(er)}
 
-    });
+    // });
 
-    this._authSer.getStudentAuthenticationService().subscribe({
-      next: (status) => {this.isStudentLogged = status},
-      error: (er) => {console.log(er)}
+    // this._authSer.getStudentAuthenticationService().subscribe({
+    //   next: (status) => {this.isStudentLogged = status},
+    //   error: (er) => {console.log(er)}
 
-    });
+    // });
+
 
   }
 
-  logout(): void {
-    this._authSer.logoutAdmin();
-    this._authSer.logoutInstructor();
-    this._authSer.logoutStudent();
+  logout():void {
+    this._authSer.logout();
   }
+
 
 
 }

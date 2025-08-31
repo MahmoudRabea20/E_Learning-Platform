@@ -16,7 +16,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand logo">E-Learning</a>
+    <a class="navbar-brand logo">Bright Mind Academy</a>
 
     <!-- Toggler -->
     <button
@@ -34,30 +34,30 @@
     <!-- Collapsible Nav Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item" *ngIf="isInstructorLogged && !isAdminLogged && !isStudentLogged">
+        <li class="nav-item" *ngIf="_authSer.isInstructorLogged() && !_authSer.isAdminLogged() && !_authSer.isStudentLogged()">
         <!-- <li class="nav-item" > -->
           <a routerLink="/instructor" class="nav-link fw-bold text-white">Instructor Dashboard</a>
         </li>
-        <li class="nav-item" *ngIf="!isInstructorLogged && isAdminLogged && !isStudentLogged">
+        <li class="nav-item" *ngIf="!_authSer.isInstructorLogged() && _authSer.isAdminLogged() && !_authSer.isStudentLogged()">
         <!-- <li class="nav-item" > -->
           <a routerLink="/admin" class="nav-link fw-bold text-white">Admin Dashboard</a>
         </li>
         <li class="nav-item">
           <a routerLink="/home" class="nav-link fw-bold text-white">Home</a>
         </li>
-        <li class="nav-item" *ngIf="!isInstructorLogged && !isAdminLogged && !isStudentLogged">
+        <li class="nav-item" *ngIf="!_authSer.isInstructorLogged() && !_authSer.isAdminLogged() && !_authSer.isStudentLogged()">
         <!-- <li class="nav-item" > -->
           <a routerLink="/login" style="color: #0066cc;" class="btn btn-light fw-bold ms-2">Login</a>
         </li>
-        <li class="nav-item" *ngIf="isInstructorLogged || isAdminLogged || isStudentLogged">
+        <li class="nav-item" *ngIf="_authSer.isInstructorLogged() || _authSer.isAdminLogged() || _authSer.isStudentLogged()">
         <!-- <li class="nav-item" > -->
           <button class="btn btn-light fw-bold ms-2" style="color: #0066cc;" routerLink="/home" (click)="logout()">Logout</button>
         </li>
-        <li class="nav-item" *ngIf="!isInstructorLogged && !isAdminLogged && !isStudentLogged">
+        <li class="nav-item" *ngIf="!_authSer.isInstructorLogged() && !_authSer.isAdminLogged() && !_authSer.isStudentLogged()">
         <!-- <li class="nav-item" > -->
           <a routerLink="/register" style="color: #0066cc;" class="btn btn-light fw-bold ms-2">Register</a>
         </li>
-        <li class="nav-item ms-3" *ngIf="isInstructorLogged || isAdminLogged || isStudentLogged">
+        <li class="nav-item ms-3" *ngIf="_authSer.isInstructorLogged() || _authSer.isAdminLogged() || _authSer.isStudentLogged()">
           <a routerLink="/profile">
             <img src="profile.png"  style="border-radius: 50% ; height: 50px; width: 50px;" alt="Profile">
           </a>

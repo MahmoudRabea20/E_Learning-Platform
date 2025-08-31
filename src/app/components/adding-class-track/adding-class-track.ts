@@ -39,13 +39,19 @@ export class AddingClassTrack implements OnInit {
   get className(){return this.ClassForm.get('className')}
 
   ngOnInit(){
-    this._classService.getAllClasses().subscribe({
+    this.loading();
+  }
+
+  loading(){
+       this._classService.getAllClasses().subscribe({
       next: (next) => {
         // console.log(next);
 
         this.classes = next
       }
     });
+
+
 
     this._trackService.getAllTracks().subscribe({
       next: (data) => {
@@ -74,7 +80,7 @@ export class AddingClassTrack implements OnInit {
               console.error("Failed to uodate class:", err)
             }
           })
-          this.ngOnInit();
+          this.loading();
           // this.classes[index] = { id: this.editClassId, ...formData };
         }
         this.editClassId = null; // Exit edit mode
@@ -92,7 +98,7 @@ export class AddingClassTrack implements OnInit {
           console.error("Failed to add class:", err)
         }
         })
-        this.ngOnInit();
+        this.loading();
         this.ClassForm.reset()
       }
     }
@@ -112,7 +118,7 @@ export class AddingClassTrack implements OnInit {
           console.error("Failed to delete class:", err)
         }
     });
-    this.ngOnInit();
+    this.loading();
     if (this.editClassId === id) {
       this.ClassForm.reset();
       this.editClassId = null;

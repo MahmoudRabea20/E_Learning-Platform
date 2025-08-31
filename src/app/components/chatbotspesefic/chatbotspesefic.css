@@ -1,13 +1,14 @@
 .chat-container {
   max-height: 500px;
   overflow-y: auto;
-  width: 50%;
+  width: 100%;
   margin: auto;
-  padding: 30px;
+  padding: 10px;
   background-color: #f7f7f7;
   border-radius: 10px;
   margin-bottom: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-height: 400px ;
 }
 
 .message {
@@ -37,17 +38,18 @@
 .input-container {
   display: flex;
   gap: 0.5rem;
-  width: 50%;
+  /* width: 100%; */
   margin: auto;
 
 }
 
 input[type="text"] {
-  flex-grow: 1;
+  /* flex-grow: 1; */
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 25px;
   font-size: 1rem;
+  width: 75%;
 }
 
 button {
@@ -65,13 +67,13 @@ button:hover {
   background-color: #0b5ed7;
 }
 
-.RagChato{
-  position: fixed;     /* Stick to viewport */
-  bottom: 83px;        /* Space from bottom */
-  right: 100px;         /* Space from right */
+/* .RagChato{
+  position: fixed;
+  bottom: 83px;
+  right: 100px;
   background-color: transparent;
-  /* padding: 10px;       Inner spacing */
-  border-radius: 8px;  /* Rounded corners */
-  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); Drop shadow */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-}
+} */

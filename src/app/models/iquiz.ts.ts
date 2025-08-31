@@ -1,10 +1,21 @@
-export interface IQuiz {
-    id:number;
-    lessonTitle:string;
-    quizname:string;
-    quizTotalMarks:number;
-    questions:string[];
-    mark:number;
-    correctAnswer:string;
-    options:string[];
+export interface IOption {
+  id?: number;
+  name: string;
+  isCorrect: boolean;
+}
+
+export interface IQuestion {
+  id?: number;
+  content: string;
+  mark: number;
+  options: IOption[];
+}
+
+export interface Iquiz {
+  id?: number;
+  description: string;
+  assignedBefore: boolean;
+  totalMarks: number;
+  lessonId?: number;
+  questions: IQuestion[];
 }

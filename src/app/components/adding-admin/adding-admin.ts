@@ -53,12 +53,16 @@ export class AddingAdmin implements OnInit {
   }
 
   ngOnInit(): void {
+      this.loading();
+    }
+
+    loading(): void{
       this._adminService.getAllAdmins().subscribe({
         next: (data) => {
           this.admins = data;
         },
         error: (err) => {
-          console.log(err.err.errors);
+          console.log(err);
         }
 
       })
@@ -91,7 +95,7 @@ export class AddingAdmin implements OnInit {
             console.error("Failed to delete Admin:", err.error.errors)
           }
       });
-      this.ngOnInit();
+      this.loading();
       if (this.editId === id) {
         this.AdminForm.reset();
         this.editId = null;
@@ -118,7 +122,7 @@ export class AddingAdmin implements OnInit {
                 console.error("Failed to update Admin:", err.error.errors)
               }
             })
-            this.ngOnInit();
+           this.loading();
           }
           this.editId = null; // Exit edit mode
         } else {
@@ -135,6 +139,7 @@ export class AddingAdmin implements OnInit {
           }
           })
         }
+        this.loading();
 
         this.AdminForm.reset();
       } else {

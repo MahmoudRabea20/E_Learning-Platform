@@ -1,5 +1,7 @@
+
 form {
   /* max-width: 500px; */
+
   width: 100%;
   margin: 20px auto;
   padding: 24px;
@@ -67,6 +69,10 @@ div.ng-invalid.ng-touched input {
 }
 /* Table layout */
 table {
+
+  /* display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; */
   width: 100%;
   border-collapse: collapse;
   margin-top: 32px;

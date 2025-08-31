@@ -25,6 +25,7 @@
     top: 0;
     bottom: 0;
     z-index: 999;
+    max-height: 95vh;
     box-shadow: 0 2px 8px rgba(44,62,80,0.10);
   }
   .sidebar-fab-toggle {
@@ -44,7 +45,7 @@
     overflow-y: auto;
     position: fixed;
     left: 0;
-    top: 125px;
+    top: 143px;
     bottom: 0;
     z-index: 999;
     margin: 0;
